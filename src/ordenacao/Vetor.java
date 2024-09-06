@@ -29,18 +29,32 @@ public class Vetor {
         }
     }
 
-    public void selecaoDireta() {
+    /**
+     * Método de ordenação utilizando o algoritmo de Seleção Direta (Selection Sort).
+     *
+     * @return int[] Um array onde:
+     *          [0] comparacoes: O número total de comparações feitas entre os elementos do vetor.
+     *          [1] trocas: O número total de trocas de posição realizadas.
+     */
+    public int[] selecaoDireta() {
         int i, j, minimo;
+        int comparacoes = 0;
+        int trocas = 0;
         Item temp;
         for (i = 0; i < this.nElem - 1; i++) {
+            trocas++;
             minimo = i;
-            for (j = i + 1; j < this.nElem; j++)
-                if (this.vetor[j].getChave() < this.vetor[minimo].getChave())
+            for (j = i + 1; j < this.nElem; j++) {
+                comparacoes++;
+                if (this.vetor[j].getChave() < this.vetor[minimo].getChave()) {
                     minimo = j;
+                }
+            }
             temp = this.vetor[minimo];
             this.vetor[minimo] = this.vetor[i];
             this.vetor[i] = temp;
         }
+        return new int[]{comparacoes, trocas};
     }
 
     static void bubblesort(int[] vet) {
@@ -142,6 +156,34 @@ public class Vetor {
                 }
             n = i;
         } while (n >= 1);
+    }
+
+
+    public void quicksort() {
+        ordena(0, this.nElem - 1);
+    }
+
+    private void ordena(int esq, int dir) {
+        int pivo, i = esq, j = dir;
+        Item temp;
+        pivo = this.vetor[(i + j) / 2].getChave();
+        do {
+            while (this.vetor[i].getChave() < pivo) i++;
+            while (this.vetor[j].getChave() > pivo) j--;
+            if (i <= j) {
+                temp = this.vetor[i];
+                this.vetor[i] = this.vetor[j];
+                this.vetor[j] = temp;
+                i++;
+                j--;
+            }
+        } while (i <= j);
+        if (esq < j) {
+            ordena(esq, j);
+        }
+        if (dir > i) {
+            ordena(i, dir);
+        }
     }
 
     public String toString() {
