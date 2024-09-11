@@ -4,7 +4,7 @@ import dados.Item;
 
 public class Vetor {
 
-    private Item[] vetor;
+    public Item[] vetor;
     private int nElem;
 
     public Vetor(int tamanho) {
@@ -63,43 +63,52 @@ public class Vetor {
         int aux;
         int comparacoes = 0;
         int trocas = 0;
+
         for (int i = 0; i < vet.length - 1; i++) {
             for (int j = 0; j < vet.length - 1 - i; j++) {
                 comparacoes++;
+
                 if (vet[j] > vet[j + 1]) {
                     aux = vet[j];
                     vet[j] = vet[j + 1];
                     vet[j + 1] = aux;
-                    //somente vet j e j+1 trocaram
-                    trocas += 2;
+
+                    trocas++;
                 }
             }
         }
+
         return new int[]{comparacoes, trocas};
     }
+
 
     public int[] heapSort() {
         int dir = nElem - 1;
         int esq = (dir - 1) / 2;
         int[] vet = {0, 0};
         Item temp;
+
         while (esq >= 0) {
-            int[] result = refazHeap(esq--, this.nElem - 1);
+            int[] result = refazHeap(esq--, dir);
             vet[0] += result[0];
             vet[1] += result[1];
         }
+
+
         while (dir > 0) {
             temp = this.vetor[0];
             this.vetor[0] = this.vetor[dir];
             this.vetor[dir--] = temp;
-            // duas trocas aqui em cima
             vet[1] += 2;
+
             int[] result = refazHeap(0, dir);
             vet[0] += result[0];
             vet[1] += result[1];
         }
+
         return vet;
     }
+
 
     private int[] refazHeap(int esq, int dir) {
         int i = esq;
@@ -108,7 +117,8 @@ public class Vetor {
         boolean heap = false;
         int comparacoes = 0;
         int trocas = 0;
-        while ((MaiorFolha <= dir) && (!heap)) {
+
+        while (MaiorFolha <= dir && !heap) {
             comparacoes++;
             if (MaiorFolha < dir) {
                 comparacoes++;
@@ -128,57 +138,68 @@ public class Vetor {
         }
         this.vetor[i] = raiz;
         trocas++;
+
         return new int[]{comparacoes, trocas};
     }
+
 
     public int[] inserçãoDireta() {
         int i, j;
         Item temp;
         int comparacoes = 0;
         int trocas = 0;
+
         for (i = 1; i < this.nElem; i++) {
             temp = this.vetor[i];
             j = i - 1;
-            while ((j >= 0) && this.vetor[j].getChave() > temp.getChave()) {
-                trocas++;
+
+            while (j >= 0) {
                 comparacoes++;
-                this.vetor[j + 1] = this.vetor[j--];
+                if (this.vetor[j].getChave() > temp.getChave()) {
+                    this.vetor[j + 1] = this.vetor[j];
+                    j--;
+                    trocas++;
+                } else {
+                    break;
+                }
             }
-            trocas++;
             this.vetor[j + 1] = temp;
+            if (j + 1 != i) {
+                trocas++;
+            }
         }
+
         return new int[]{comparacoes, trocas};
     }
 
+
     public int[] shellSort() {
-        int i, j, h;
-        Item temp;
-        h = 1;
+        int n = this.nElem;
         int comparacoes = 0;
         int trocas = 0;
-        do {
-            h = 3 * h + 1;
-            comparacoes++;
-        } while (h < this.nElem);
-        do {
-            h = h / 3;
-            for (i = h; i < this.nElem; i++) {
-                temp = this.vetor[i];
-                j = i;
-                while (this.vetor[j - h].getChave() > temp.getChave()) {
+
+        for (int gap = n / 2; gap > 0; gap /= 2) {
+            for (int i = gap; i < n; i++) {
+                Item key = this.vetor[i];
+                int j = i;
+                while (j >= gap) {
                     comparacoes++;
-                    trocas++;
-                    this.vetor[j] = this.vetor[j - h];
-                    j -= h;
-                    if (j < h) {
+                    if (this.vetor[j - gap].getChave() > key.getChave()) {
+                        this.vetor[j] = this.vetor[j - gap];
+                        j -= gap;
+                        trocas++;
+                    } else {
                         break;
                     }
                 }
-                this.vetor[j] = temp;
-                trocas++;
+                this.vetor[j] = key;
+                if (j != i) {
+                    trocas++;
+                }
             }
-        } while (h != 1);
+        }
         return new int[]{comparacoes, trocas};
+
     }
 
     public int[] bubblesort() {
@@ -196,12 +217,12 @@ public class Vetor {
                     this.vetor[j] = this.vetor[j + 1];
                     this.vetor[j + 1] = temp;
                     i = j;
-                    trocas+=2;
+                    trocas += 2;
                 }
             }
             n = i;
         } while (n >= 1);
-        return new int[] {comparacoes, trocas};
+        return new int[]{comparacoes, trocas};
     }
 
     public int[] quicksort() {
@@ -212,26 +233,39 @@ public class Vetor {
     private int[] ordena(int esq, int dir) {
         int pivo, i = esq, j = dir;
         Item temp;
-        int[] result = {0,0};
+        int[] result = {0, 0};
+
+
         pivo = this.vetor[(i + j) / 2].getChave();
+
         do {
+
             result[0]++;
             while (this.vetor[i].getChave() < pivo) {
                 i++;
+                result[0]++;
             }
+
+
             result[0]++;
             while (this.vetor[j].getChave() > pivo) {
                 j--;
+                result[0]++;
             }
+
             if (i <= j) {
+
                 temp = this.vetor[i];
                 this.vetor[i] = this.vetor[j];
                 this.vetor[j] = temp;
-                result[1]+=2;
+                result[1] += 2;
+
                 i++;
                 j--;
             }
         } while (i <= j);
+
+
         if (esq < j) {
             int[] resultLeft = ordena(esq, j);
             result[0] += resultLeft[0];
@@ -242,8 +276,55 @@ public class Vetor {
             result[0] += resultRight[0];
             result[1] += resultRight[1];
         }
-        return result;   
+
+        return result;
     }
+
+
+    public int[] shakersort() {
+        int esq, dir, i, j;
+        Item temp;
+        int comparacoes = 0;
+        int trocas = 0;
+
+        esq = 1;
+        dir = this.nElem - 1;
+        j = dir;
+
+        do {
+
+            for (i = dir; i >= esq; i--) {
+                comparacoes++;
+                if (this.vetor[i - 1].getChave() > this.vetor[i].getChave()) {
+
+                    temp = this.vetor[i];
+                    this.vetor[i] = this.vetor[i - 1];
+                    this.vetor[i - 1] = temp;
+                    trocas++;
+                    j = i;
+                }
+            }
+            esq = j + 1;
+
+
+            for (i = esq; i <= dir; i++) {
+                comparacoes++;
+                if (this.vetor[i - 1].getChave() > this.vetor[i].getChave()) {
+
+                    temp = this.vetor[i];
+                    this.vetor[i] = this.vetor[i - 1];
+                    this.vetor[i - 1] = temp;
+                    trocas++;
+                    j = i;
+                }
+            }
+            dir = j - 1;
+
+        } while (esq <= dir);
+
+        return new int[]{comparacoes, trocas};
+    }
+
 
     @Override
     public String toString() {

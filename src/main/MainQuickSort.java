@@ -26,19 +26,25 @@ public class MainQuickSort {
         String pathVetorCrescente10000 = path + "num_crescentes_10000.txt";
         String pathVetorDecrescente10000 = path + "num_decrescente_10000.txt";
 
+        System.out.println("Vetor de 100");
+        System.out.println("Vetor aleatorio 100");
         carregarEProcessarVetor(pathVetorAleatorio100, vetorAleatorio100);
+        System.out.println("Vetor crescente 100");
         carregarEProcessarVetor(pathVetorCrescente100, vetorCrescente100);
+        System.out.println("Vetor decrescente 100");
         carregarEProcessarVetor(pathVetorDecrescente100, vetorDecrescente100);
+        System.out.println("\n\nVetor de 10000");
+        System.out.println("Vetor aleatorio 10000");
         carregarEProcessarVetor(pathVetorAleatorio10000, vetorAleatorio10000);
+        System.out.println("Vetor crescente 10000");
         carregarEProcessarVetor(pathVetorCrescente10000, vetorCrescente10000);
+        System.out.println("Vetor decrescente 10000");
         carregarEProcessarVetor(pathVetorDecrescente10000, vetorDecrescente10000);
     }
 
     public static void carregarEProcessarVetor(String caminhoArquivo, Vetor vetor) {
         carregarDados(caminhoArquivo, vetor);
-        exibirVetor("Vetor antes da ordenação", vetor);
         int[] resultados = ordenarVetor(vetor);
-        exibirVetor("Vetor após a ordenação", vetor);
         exibirResultadosOrdenacao(resultados);
     }
 
@@ -62,10 +68,6 @@ public class MainQuickSort {
         return vetor.quicksort();
     }
 
-    public static void exibirVetor(String mensagem, Vetor vetor) {
-        System.out.println(mensagem + ":");
-        System.out.println(vetor);
-    }
 
     public static void exibirResultadosOrdenacao(int[] resultados) {
         System.out.println("Quantidade de comparações: " + resultados[0]);

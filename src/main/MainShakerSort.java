@@ -7,7 +7,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
-public class MainBubbleSort {
+public class MainShakerSort {
 
     public static void main(String[] args) {
         Vetor vetorAleatorio100 = new Vetor(100);
@@ -65,13 +65,9 @@ public class MainBubbleSort {
     }
 
     public static int[] ordenarVetor(Vetor vetor) {
-        return vetor.bubblesort();
+        return vetor.shakersort();
     }
 
-    public static void exibirVetor(String mensagem, Vetor vetor) {
-        System.out.println(mensagem + ":");
-        System.out.println(vetor);
-    }
 
     public static void exibirResultadosOrdenacao(int[] resultados) {
         System.out.println("Quantidade de comparações: " + resultados[0]);
